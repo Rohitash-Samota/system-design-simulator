@@ -358,7 +358,7 @@ UPI ID: <code>8824598824@ptsbi</code> — pay from any UPI app (Paytm · PhonePe
 
 ## 📄 License
 
-[MIT](LICENSE) © Vijay Gupta, [Rohitash Samota](https://github.com/Rohitash-Samota)
+[MIT](LICENSE) © Rohitash Samota, [Rohitash Samota](https://github.com/Rohitash-Samota)
 
 <div align="center">
 <br/>
