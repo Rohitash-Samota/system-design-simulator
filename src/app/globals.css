@@ -1,0 +1,464 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ──────────────────────────────────────────────────────────────────────────
+   PALETTE REMAP — the single highest-leverage "de-AI" change.
+   The whole app uses Tailwind `zinc-*` and `cyan-*` utilities. We override
+   those scales here, so every surface/border/text/accent picks up a deliberate,
+   cool-tinted near-black ramp (Radix-Slate-class, OKLCH, hue ~240) and a
+   refined, desaturated cyan accent — with zero per-component churn.
+
+   Principles applied (from the research): colored neutrals (never flat gray),
+   luminance-based elevation, AA-contrast text, and an accent that's calm on
+   dark (full-saturation cyan "burns" on near-black).
+   ────────────────────────────────────────────────────────────────────────── */
+/* Map Tailwind's zinc + cyan utilities to per-theme intermediate vars so the
+   whole app (which uses bg-zinc-*, text-zinc-*, bg-cyan-* etc.) flips correctly
+   between dark and light. The actual values live in `:root` (light) and
+   `.dark` (dark) below — in light mode the neutral ramp is inverted (zinc-900
+   becomes a near-white panel surface, zinc-100 becomes dark text), which lets
+   "dark surface + light text" components become "light surface + dark text"
+   without touching any component. */
+@theme inline {
+  --color-zinc-50:  var(--z-50);
+  --color-zinc-100: var(--z-100);
+  --color-zinc-200: var(--z-200);
+  --color-zinc-300: var(--z-300);
+  --color-zinc-400: var(--z-400);
+  --color-zinc-500: var(--z-500);
+  --color-zinc-600: var(--z-600);
+  --color-zinc-700: var(--z-700);
+  --color-zinc-800: var(--z-800);
+  --color-zinc-900: var(--z-900);
+  --color-zinc-950: var(--z-950);
+  --color-cyan-300: var(--ac-300);
+  --color-cyan-400: var(--ac-400);
+  --color-cyan-500: var(--ac-500);
+  --color-cyan-600: var(--ac-600);
+  --color-cyan-700: var(--ac-700);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-heading: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ── LIGHT THEME (default :root) ────────────────────────────────────────────
+   The neutral ramp is INVERTED vs dark: bg-zinc-900 → near-white panel,
+   text-zinc-100 → dark text. This lets every "dark surface + light text"
+   component render correctly on light without any component edits. */
+:root {
+  /* inverted neutral ramp (text steps dark, surface steps light) */
+  --z-50:  oklch(0.30 0.030 252);
+  --z-100: oklch(0.27 0.036 252);  /* primary text — blue ink */
+  --z-200: oklch(0.32 0.034 252);
+  --z-300: oklch(0.40 0.034 252);  /* body emphasis */
+  --z-400: oklch(0.46 0.034 252);  /* body / labels */
+  --z-500: oklch(0.50 0.034 252);  /* muted — AA on vellum */
+  --z-600: oklch(0.56 0.032 252);
+  --z-700: oklch(0.83 0.022 252);  /* strong border — the drawn line */
+  --z-800: oklch(0.89 0.016 252);  /* border / chip / input */
+  --z-900: oklch(0.972 0.007 252); /* panels / nodes / cards (vellum) */
+  --z-950: oklch(0.982 0.005 252); /* deepest well */
+  --ac-300: oklch(0.72 0.13 202);
+  --ac-400: oklch(0.60 0.16 201);
+  --ac-500: oklch(0.51 0.16 202);  /* primary accent — AA text on vellum */
+  --ac-600: oklch(0.46 0.15 204);
+  --ac-700: oklch(0.42 0.13 206);  /* links / accent text */
+
+  --background: oklch(0.932 0.014 252);   /* drafting vellum — blue-tinted paper */
+  --foreground: oklch(0.25 0.036 252);
+  --card: oklch(0.972 0.007 252);         /* panels — near-white vellum */
+  --card-foreground: oklch(0.25 0.036 252);
+  --popover: oklch(0.982 0.005 252);
+  --popover-foreground: oklch(0.25 0.036 252);
+  --primary: oklch(0.25 0.036 252);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.900 0.015 252);
+  --secondary-foreground: oklch(0.25 0.036 252);
+  --muted: oklch(0.900 0.015 252);
+  --muted-foreground: oklch(0.50 0.034 252);
+  --accent: oklch(0.900 0.015 252);
+  --accent-foreground: oklch(0.25 0.036 252);
+  --destructive: oklch(0.58 0.20 25);
+  --border: oklch(0.872 0.016 252);
+  --input: oklch(0.862 0.018 252);
+  --ring: oklch(0.56 0.16 201);
+  --chart-1: oklch(0.56 0.16 201);
+  --chart-2: oklch(0.58 0.13 150);
+  --chart-3: oklch(0.62 0.14 85);
+  --chart-4: oklch(0.52 0.16 280);
+  --chart-5: oklch(0.56 0.18 20);
+  --radius: 0.25rem;
+  --sidebar: oklch(0.962 0.009 252);
+  --sidebar-foreground: oklch(0.25 0.036 252);
+  --sidebar-primary: oklch(0.56 0.16 201);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.900 0.015 252);
+  --sidebar-accent-foreground: oklch(0.25 0.036 252);
+  --sidebar-border: oklch(0.872 0.016 252);
+  --sidebar-ring: oklch(0.56 0.16 201);
+
+  /* canvas atmosphere (subtle on vellum — soft, no harsh white) */
+  --canvas-atmos:
+    radial-gradient(72% 46% at 50% -6%, oklch(0.56 0.16 201 / 0.06), transparent 72%),
+    radial-gradient(135% 130% at 50% 42%, transparent 64%, oklch(0.48 0.05 252 / 0.08) 100%);
+  /* theme-specific canvas colors consumed in JS (grid, edges, minimap) */
+  --grid-dot: rgba(58, 92, 150, 0.16);
+  --grid-line: rgba(58, 92, 150, 0.10);   /* fine 20px rule */
+  --grid-major: rgba(58, 92, 150, 0.20);  /* coarse 100px rule */
+  --edge-idle: rgba(70, 100, 155, 0.48);
+  --minimap-mask: rgba(226, 233, 245, 0.62);
+  --bp-ink: rgba(45, 80, 140, 0.55);      /* annotation / tick marks */
+}
+
+/* ── DARK THEME (.dark) ─────────────────────────────────────────────────────
+   Cool near-black (hue 240). Canvas floor sits BELOW panels → elevation via
+   luminance, not shadows (the Linear move). */
+.dark {
+  --z-50:  oklch(0.98 0.010 252);
+  --z-100: oklch(0.95 0.014 252);
+  --z-200: oklch(0.90 0.019 252);
+  --z-300: oklch(0.82 0.025 252);
+  --z-400: oklch(0.73 0.032 252);
+  --z-500: oklch(0.695 0.036 252);
+  --z-600: oklch(0.56 0.042 252);
+  --z-700: oklch(0.41 0.050 252);  /* strong border — the drawn blueprint line */
+  --z-800: oklch(0.305 0.046 252); /* border / chip / input */
+  --z-900: oklch(0.238 0.042 252); /* panels / nodes / cards */
+  --z-950: oklch(0.158 0.036 252); /* deepest well */
+  --ac-300: oklch(0.88 0.12 205);
+  --ac-400: oklch(0.83 0.14 202);
+  --ac-500: oklch(0.76 0.15 200);
+  --ac-600: oklch(0.67 0.15 202);
+  --ac-700: oklch(0.58 0.13 205);
+
+  --background: oklch(0.168 0.040 252);     /* drafting table — deep blueprint navy */
+  --foreground: oklch(0.96 0.012 252);
+  --card: oklch(0.238 0.042 252);           /* panels / nodes / cards */
+  --card-foreground: oklch(0.96 0.012 252);
+  --popover: oklch(0.268 0.044 252);        /* floating — lightest surface */
+  --popover-foreground: oklch(0.96 0.012 252);
+  --primary: oklch(0.95 0.014 252);
+  --primary-foreground: oklch(0.19 0.038 252);
+  --secondary: oklch(0.285 0.044 252);
+  --secondary-foreground: oklch(0.95 0.014 252);
+  --muted: oklch(0.285 0.044 252);
+  --muted-foreground: oklch(0.73 0.032 252);
+  --accent: oklch(0.285 0.044 252);
+  --accent-foreground: oklch(0.95 0.014 252);
+  --destructive: oklch(0.62 0.20 25);
+  --border: oklch(0.285 0.044 252);
+  --input: oklch(0.315 0.046 252);
+  --ring: oklch(0.76 0.15 200);
+  --chart-1: oklch(0.76 0.15 200);
+  --chart-2: oklch(0.70 0.13 150);
+  --chart-3: oklch(0.74 0.14 85);
+  --chart-4: oklch(0.62 0.16 280);
+  --chart-5: oklch(0.64 0.18 20);
+  --sidebar: oklch(0.198 0.040 252);
+  --sidebar-foreground: oklch(0.95 0.014 252);
+  --sidebar-primary: oklch(0.76 0.15 200);
+  --sidebar-primary-foreground: oklch(0.19 0.038 252);
+  --sidebar-accent: oklch(0.285 0.044 252);
+  --sidebar-accent-foreground: oklch(0.95 0.014 252);
+  --sidebar-border: oklch(0.285 0.044 252);
+  --sidebar-ring: oklch(0.76 0.15 200);
+
+  --canvas-atmos:
+    radial-gradient(72% 46% at 50% -6%, oklch(0.76 0.15 200 / 0.10), transparent 72%),
+    radial-gradient(60% 55% at 100% 108%, oklch(0.55 0.11 258 / 0.08), transparent 72%),
+    radial-gradient(135% 130% at 50% 42%, transparent 60%, oklch(0.11 0.03 252 / 0.52) 100%);
+  --grid-dot: rgba(150, 190, 255, 0.16);
+  --grid-line: rgba(140, 180, 250, 0.09);   /* fine 20px rule */
+  --grid-major: rgba(150, 190, 255, 0.17);  /* coarse 100px rule */
+  --edge-idle: rgba(150, 185, 245, 0.34);
+  --minimap-mask: rgba(10, 14, 26, 0.72);
+  --bp-ink: rgba(160, 200, 255, 0.55);      /* annotation / tick marks */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    @apply font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Tabular, slashed-zero figures for all metrics/timers/QPS so numbers don't
+     jitter as they change and align in columns. */
+  .font-mono, [class*="tabular"] {
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+  /* Lucide ships a 2px stroke that reads heavy at small UI sizes — a slightly
+     lighter, uniform stroke is the "tuned icon set" craft signal. */
+  svg.lucide { stroke-width: 1.75; }
+}
+
+/* ── Elevation scale ───────────────────────────────────────────────────────
+   One consistent shadow ramp for the whole app (cards → panels → sheets →
+   popovers). Tuned for a dark UI: low-spread, slightly cool, never milky. */
+@theme inline {
+  --shadow-e1: 0 1px 2px 0 oklch(0 0 0 / 0.30);
+  --shadow-e2: 0 2px 8px -2px oklch(0 0 0 / 0.40), 0 1px 2px 0 oklch(0 0 0 / 0.30);
+  --shadow-e3: 0 8px 24px -6px oklch(0 0 0 / 0.50), 0 2px 6px -2px oklch(0 0 0 / 0.35);
+  --shadow-e4: 0 16px 48px -12px oklch(0 0 0 / 0.60), 0 4px 12px -4px oklch(0 0 0 / 0.40);
+}
+
+/* Full viewport height with dvh fallback so mobile browser chrome doesn't shift layout */
+html, body { height: 100%; }
+@supports (height: 100dvh) {
+  html, body { height: 100dvh; }
+}
+
+/* iOS safe areas */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-top    { padding-top:    env(safe-area-inset-top, 0px); }
+
+/* ── BLUEPRINT LANGUAGE ─────────────────────────────────────────────────────
+   The drafting-document vocabulary: engraved section labels, corner registration
+   ticks, and dimension rules. Kept as utilities so components opt in rather than
+   every surface inheriting a heavy technical treatment. */
+
+/* Panel section headings — the drafting-sheet equivalent of an <h3>.
+   zinc-400 rather than zinc-500 keeps these AA-legible at 10px. */
+.bp-section {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--z-400);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* Micro-labels inside cells and chips. */
+.bp-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--z-500);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* Registration ticks at a panel's corners — the crop marks on a printed sheet.
+   Drawn as pseudo-elements so they cost no extra DOM.
+   NOTE: this deliberately does NOT set `position`. These rules sit outside
+   Tailwind's layers, so a `position` here would outrank utilities like
+   `absolute` on the same element. Callers must supply their own positioning
+   context (`relative`/`absolute`/`fixed`). */
+.bp-ticks::before,
+.bp-ticks::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  opacity: 0.75;
+}
+.bp-ticks::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--bp-ink);
+  border-left: 1px solid var(--bp-ink);
+}
+.bp-ticks::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 1px solid var(--bp-ink);
+  border-bottom: 1px solid var(--bp-ink);
+}
+
+/* A measured rule with end serifs, as used for dimension callouts. */
+.bp-rule {
+  position: relative;
+  height: 1px;
+  background: var(--bp-ink);
+  opacity: 0.5;
+}
+.bp-rule::before,
+.bp-rule::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  width: 1px;
+  height: 5px;
+  background: var(--bp-ink);
+}
+.bp-rule::before { left: 0; }
+.bp-rule::after  { right: 0; }
+
+/* Zoom controls share the bottom-left corner with the title block. Lift them
+   clear only at md+ — the title block is `hidden md:block`, so on mobile the
+   controls keep their normal corner position.
+   Three classes on purpose: xyflow's `.react-flow__panel.bottom { bottom: 0 }`
+   has two, and its stylesheet loads after this one, so a two-class selector
+   here would lose on source order. */
+@media (min-width: 768px) {
+  .react-flow__panel.bottom.sf-controls-lifted { bottom: 140px; }
+}
+
+/* Title block — the metadata cartouche in a drawing's corner. */
+.bp-titleblock {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-ticks::before,
+  .bp-ticks::after { transition: none; }
+}
+
+/* Kill double-tap-zoom delay on interactive controls */
+button, a, [role="button"], input, textarea, select { touch-action: manipulation; }
+
+/* Sheet drag handle */
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 9999px;
+  background: oklch(0.40 0.016 240);
+  margin-inline: auto;
+}
+
+/* ── Canvas atmosphere (baked into the fixed React Flow background) ──────────
+   The glow + vignette live on the `.react-flow` element itself, which is fixed
+   to the viewport (it does NOT pan/zoom — only the inner __viewport transforms).
+   So the atmosphere is part of one OPAQUE canvas surface: dragging a node or
+   panning repaints only the canvas, with zero overlay-compositing cost. This is
+   what keeps interaction perfectly smooth while still looking deep + designed. */
+.react-flow.sf-canvas {
+  background-color: var(--background);
+  background-image: var(--canvas-atmos);
+}
+
+/* Radial edge-mask fade for the React Flow dot grid — the single biggest
+   "premium canvas" upgrade. The grid is densest at center, fading at edges. */
+.react-flow__background {
+  -webkit-mask-image: radial-gradient(115% 115% at 50% 45%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(115% 115% at 50% 45%, #000 55%, transparent 100%);
+}
+
+/* Data/metric helpers — big bold value, small dimmed uppercase label. */
+.metric-value { font-variant-numeric: tabular-nums slashed-zero; letter-spacing: -0.01em; }
+.metric-label {
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--color-zinc-500);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: oklch(0.36 0.016 240); border-radius: 9999px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.46 0.016 240); background-clip: padding-box; }
+* { scrollbar-width: thin; scrollbar-color: oklch(0.36 0.016 240) transparent; }
+
+/* Premium easing curve (easeOutExpo) used across UI motion. */
+:root { --ease-out: cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Refined cyan focus ring on a dark UI */
+*:focus-visible { outline: 2px solid oklch(0.74 0.14 197); outline-offset: 2px; border-radius: 4px; }
+
+/* Text selection picks up the refined accent */
+::selection { background: oklch(0.72 0.115 200 / 0.28); }
+
+/* Smooth, consistent micro-interactions on interactive controls (sub-200ms, ease-out) */
+button:not(.react-flow__controls-button), a, [role="button"], [role="tab"], .react-flow__edge {
+  transition: background-color 0.16s var(--ease-out), border-color 0.16s var(--ease-out),
+    color 0.16s var(--ease-out), box-shadow 0.16s var(--ease-out), opacity 0.16s var(--ease-out),
+    scale 0.12s var(--ease-out);
+}
+button:not([disabled]):active { scale: 0.97; }
+
+/* Keep node interaction GPU-cheap: no filter/transition on the node wrapper
+   (those repaint during drag). Hover feedback lives on the node's own border. */
+.react-flow__handle { transition: background-color 0.15s var(--ease-out), border-color 0.15s var(--ease-out); }
+/* Use the standalone `scale` property so React Flow's own translate transform
+   (which centers the handle on the node edge) is preserved — overriding
+   `transform` here makes the handle jump on hover. */
+.react-flow__handle:hover { scale: 1.2; }
+
+/* Keep React Flow Controls clickable above the pen overlay (overlay z-index: 5) */
+.react-flow .react-flow__controls { z-index: 6; }
+
+/* Touch devices: bigger connection handles + a generous invisible hit area */
+@media (pointer: coarse) {
+  .react-flow__handle::after,
+  .react-flow__resize-control.handle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+  }
+}
+@keyframes status-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Respect users who prefer reduced motion (a11y) — collapse all animation
+   to near-instant while keeping final states intact. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\n  \"app\": {\n    \"[project]/Documents/system-design-simulator/src/app/page\": [\n      \"static/media/c47649aa31f9e140-s.p.11uo_35nso9mn.woff2\",\n      \"static/media/797e433ab948586e-s.p.08e28id.o-okb.woff2\"\n    ]\n  },\n  \"appUsingSizeAdjust\": true,\n  \"pages\": {},\n  \"pagesUsingSizeAdjust\": false\n}"
