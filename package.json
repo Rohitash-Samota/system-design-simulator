@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "author": "Vijay Gupta (@vijaygupta18)",
+  "author": "Rohitash Samota",
   "description": "SystemForge — an open-source system design interview simulator: build architectures, simulate traffic, and get scored.",
   "scripts": {
     "dev": "next dev",

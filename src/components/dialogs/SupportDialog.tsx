@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { X, Copy, Check, Coffee, Heart } from "lucide-react";
 import { ModalShell } from "./ModalShell";
 
@@ -10,8 +9,8 @@ interface SupportDialogProps {
   onClose: () => void;
 }
 
-const UPI_ID = "vijaygupta1818@ptyes";
-const UPI_NAME = "Vijay Gupta";
+const UPI_ID = "8824598824@ptsbi";
+const UPI_NAME = "Rohitash Samota";
 
 /** Build a UPI intent URL — opens the user's UPI app with amount pre-filled. */
 function upiIntent(amount?: number): string {
@@ -102,27 +101,13 @@ export function SupportDialog({ open, onClose }: SupportDialogProps) {
             ))}
           </div>
 
-          {/* QR */}
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-              Or scan with any UPI app
-            </p>
-            <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-100 p-1.5 shadow-lg">
-              <Image
-                src="/support-upi-qr.jpg"
-                alt="UPI QR code — scan to support Vijay Gupta"
-                width={1012}
-                height={1600}
-                className="h-auto w-[200px] rounded-md"
-                priority={false}
-              />
-            </div>
-          </div>
-
           {/* UPI ID copy */}
+          <p className="mt-4 text-[10px] font-medium uppercase tracking-wider text-zinc-400">
+            Or pay to UPI ID
+          </p>
           <button
             onClick={handleCopy}
-            className="mt-3 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 font-mono text-[11px] text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800"
+            className="mt-2 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1.5 font-mono text-[11px] text-zinc-300 transition-colors hover:border-zinc-700 hover:bg-zinc-800"
           >
             {UPI_ID}
             {copied ? (
@@ -140,7 +125,7 @@ export function SupportDialog({ open, onClose }: SupportDialogProps) {
             <span>Built with</span>
             <Heart className="h-3 w-3 fill-rose-400 text-rose-400" />
             <span>by</span>
-            <span className="font-medium text-zinc-300">Vijay Gupta</span>
+            <span className="font-medium text-zinc-300">{UPI_NAME}</span>
           </div>
         </div>
     </ModalShell>

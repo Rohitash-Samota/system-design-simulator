@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://github.com/vijaygupta18/system-design-simulator">
+<a href="https://github.com/Rohitash-Samota/system-design-simulator">
   <img src="public/banner.svg" alt="SystemForge" width="900"/>
 </a>
 
@@ -18,10 +18,9 @@ Build real architectures · simulate production traffic · get scored like a rea
 [![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![ReactFlow](https://img.shields.io/badge/ReactFlow_v12-FF0072?style=for-the-badge)](https://reactflow.dev)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/vijaygupta18/system-design-simulator/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/vijaygupta18/system-design-simulator/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/github/license/vijaygupta18/system-design-simulator?style=flat-square)](LICENSE)
+[![License: MIT](https://img.shields.io/github/license/Rohitash-Samota/system-design-simulator?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-22c55e.svg?style=flat-square)](#contributing)
-[![Stars](https://img.shields.io/github/stars/vijaygupta18/system-design-simulator?style=flat-square)](https://github.com/vijaygupta18/system-design-simulator/stargazers)
+[![Stars](https://img.shields.io/github/stars/Rohitash-Samota/system-design-simulator?style=flat-square)](https://github.com/Rohitash-Samota/system-design-simulator/stargazers)
 
 <br/>
 
@@ -260,7 +259,7 @@ Every problem includes scale requirements (QPS, storage, latency), constraints, 
 > **Prerequisites:** Node.js 18.18+ and npm.
 
 ```bash
-git clone https://github.com/vijaygupta18/system-design-simulator.git
+git clone https://github.com/Rohitash-Samota/system-design-simulator.git
 cd system-design-simulator
 npm install
 npm run dev
@@ -351,21 +350,7 @@ If SystemForge helped you prep for a system design interview, a chai goes a long
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-UPI-06B6D4?style=for-the-badge&logo=buymeacoffee&logoColor=white)](#-support)
 
-<details>
-<summary><b>Click to reveal the UPI QR</b></summary>
-
-<br/>
-
-<p align="center">
-  <img src="public/support-upi-qr.jpg" alt="UPI QR code — vijaygupta1818@ptyes" width="280"/>
-</p>
-
-<p align="center">
-  Scan with any UPI app — Paytm · PhonePe · GPay · BHIM<br/>
-  UPI ID: <code>vijaygupta1818@ptyes</code>
-</p>
-
-</details>
+UPI ID: <code>8824598824@ptsbi</code> — pay from any UPI app (Paytm · PhonePe · GPay · BHIM).
 
 > Prefer the in-app flow? Open the deployed site with <code>?support=1</code> and the support dialog opens automatically.
 
@@ -373,7 +358,7 @@ If SystemForge helped you prep for a system design interview, a chai goes a long
 
 ## 📄 License
 
-[MIT](LICENSE) © [@vijaygupta18](https://github.com/vijaygupta18)
+[MIT](LICENSE) © Vijay Gupta, [Rohitash Samota](https://github.com/Rohitash-Samota)
 
 <div align="center">
 <br/>
